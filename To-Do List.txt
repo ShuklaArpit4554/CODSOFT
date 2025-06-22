@@ -1,0 +1,87 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct Task {
+    string name;
+    bool done;
+};
+
+void showMenu() {
+    cout << "\n1. Add Task\n";
+    cout << "2. View Tasks\n";
+    cout << "3. Mark Task as Completed\n";
+    cout << "4. Remove Task\n";
+    cout << "5. Exit\n";
+    cout << "Choose an option: ";
+}
+
+void addTask(vector<Task>& list) {
+    string taskName;
+    cout << "Enter task: ";
+    cin.ignore();
+    getline(cin, taskName);
+    list.push_back({taskName, false});
+}
+
+void viewTasks(const vector<Task>& list) {
+    if (list.empty()) {
+        cout << "No tasks.\n";
+        return;
+    }
+    for (int i = 0; i < list.size(); i++) {
+        cout << i + 1 << ". " << list[i].name;
+        if (list[i].done)
+            cout << " [Done]";
+        else
+            cout << " [Pending]";
+        cout << endl;
+    }
+}
+
+void completeTask(vector<Task>& list) {
+    int n;
+    cout << "Enter task number to mark as completed: ";
+    cin >> n;
+    if (n >= 1 && n <= list.size())
+        list[n - 1].done = true;
+    else
+        cout << "Invalid task number.\n";
+}
+
+void removeTask(vector<Task>& list) {
+    int n;
+    cout << "Enter task number to remove: ";
+    cin >> n;
+    if (n >= 1 && n <= list.size())
+        list.erase(list.begin() + (n - 1));
+    else
+        cout << "Invalid task number.\n";
+}
+
+int main() {
+    vector<Task> tasks;
+    int choice;
+
+    while (true) {
+        showMenu();
+        cin >> choice;
+
+        if (choice == 1)
+            addTask(tasks);
+        else if (choice == 2)
+            viewTasks(tasks);
+        else if (choice == 3)
+            completeTask(tasks);
+        else if (choice == 4)
+            removeTask(tasks);
+        else if (choice == 5)
+            break;
+        else
+            cout << "Invalid choice.\n";
+    }
+
+    return 0;
+}
